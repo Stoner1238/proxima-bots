@@ -8,7 +8,7 @@ import time
 from datetime import datetime, timedelta
 
 # Replace with your actual bot token and OpenAI API key
-TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
+TOKEN = "8145529781:AAF0FsG70As3EoL995Wq3z6nIoTDnQOLIs4"
 OPENAI_API_KEY = "YOUR_OPENAI_API_KEY"
 
 bot = telebot.TeleBot(TOKEN)
