@@ -8,7 +8,7 @@ import time
 from datetime import datetime, timedelta
 
 # Replace with your actual bot token and OpenAI API key
-TOKEN = "8186745486:AAFwheEeSGz44MI9QVgOXsYO9OgGw9T8H5g"
+TOKEN = "8145529781:AAF0FsG70As3EoL995Wq3z6nIoTDnQOLIs4"
 OPENAI_API_KEY = "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"
 
 
