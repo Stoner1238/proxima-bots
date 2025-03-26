@@ -9,14 +9,11 @@ from datetime import datetime, timedelta
 
 # Replace with your actual bot token and OpenAI API key
 TOKEN = "8145529781:AAF0FsG70As3EoL995Wq3z6nIoTDnQOLIs4"
-OPENAI_API_KEY = "YOUR_OPENAI_API_KEY"
+OPENAI_API_KEY = "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"
+
 
 bot = telebot.TeleBot(TOKEN)
 openai.api_key = OPENAI_API_KEY
-
-# Dictionary to track last message time for cooldown
-user_last_message_time = {}
-COOLDOWN_TIME = 10  # Time in seconds before user can send another message
 
 # Function to generate AI images
 def generate_ai_image(prompt):
@@ -35,6 +32,7 @@ def send_ai_image(message):
         return
 
     bot.reply_to(message, "Generating image... Please wait.")
+    
     image_url = generate_ai_image(user_prompt)
     
     if image_url:
@@ -43,6 +41,8 @@ def send_ai_image(message):
         bot.reply_to(message, "Sorry, I couldn't generate the image. Try again!")
 
 # AI Chat Function
+import openai
+
 def get_ai_response(user_input):
     response = g4f.ChatCompletion.create(
         model="gpt-4",  # or "gpt-3.5"
@@ -50,27 +50,13 @@ def get_ai_response(user_input):
     )
     return response
 
-# Handle all text messages with AI and enforce cooldown
+# Handle all text messages with AI
 @bot.message_handler(func=lambda message: True)
 def ai_chat(message):
-    user_id = message.from_user.id
-    current_time = time.time()
-
-    # Check if user is in cooldown
-    if user_id in user_last_message_time:
-        last_time = user_last_message_time[user_id]
-        time_diff = current_time - last_time
-        if time_diff < COOLDOWN_TIME:
-            remaining_time = round(COOLDOWN_TIME - time_diff, 1)
-            bot.reply_to(message, f"⏳ Please wait {remaining_time} seconds before sending another message!")
-            return
-
-    # Update last message time
-    user_last_message_time[user_id] = current_time
-    ai_response = get_ai_response(message.text)
+    user_text = message.text
+    ai_response = get_ai_response(user_text)
     bot.reply_to(message, ai_response)
-
-# Welcome new group members
+    
 @bot.message_handler(content_types=['new_chat_members'])
 def welcome_new_member(message):
     for new_member in message.new_chat_members:
@@ -85,6 +71,7 @@ def welcome_new_member(message):
 
 Enjoy your stay! 🚀
 """
+
     bot.send_message(message.chat.id, welcome_text)
     bot.send_message(message.chat.id, rules_text)
 
